@@ -1,0 +1,539 @@
+---
+title: "Trabajo Final"
+author: "Alessa Garcia- Omar Triveño"
+date: "17/12/2021"
+output: html_document
+---
+
+```{r}
+library(rmdformats)
+```
+Repositorio github:
+
+https://github.com/Alessth/TrabajoFinal
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(rio)
+```
+
+```{r}
+setwd("C:/Users/USER/Desktop/clases/sociales/CICLO II/ESTADISTICA II/trab")
+data=import("Base.sav")
+```
+
+Introducción: 
+
+En el año 2014 se dio la Reforma Universitaria la cual fue una respuesta del gobierno de turno a la exigencia ciudadana por incrementar la calidad en la educación superior. En consecuencia, desde su formulación hasta la fecha en la cual se está escribiendo esta investigación, la SUNEDU, ente regulador creado con el propósito de cumplir con los propósitos planteados en la Reforma Universitaria, ha cerrado 13 universidades ilegales y sancionado 32 universidades por programas y establecimientos no autorizados. Sin embargo, a pesar que su labor ha sido reconocida por la mejora en la calidad, ha recibido diversos intentos de grupos con intereses particulares y representación en el Congreso de la República que han colocado impedimentos para su implementación. 
+
+En este sentido, la investigación se propone identificar aquellos factores asociados que estén relacionados con la calidad en la formación profesional que los estudiantes reciben en las universidades y su perspectiva respecto al desarrollo del centro de estudios. Dado que la Reforma Universitaria del año 2014 se ha centrado en el establecimiento de estándares mínimos y óptimos para el licenciamiento de las universidades, vemos que estos dos elementos se encuentran también en el II CENAUN 2010. Este fue un censo a nivel nacional llevado a cabo por el INEI bajo el método del autoempadronamiento donde los estudiantes registran sus respuestas a través de internet y acceso a cédulas electrónicas.
+
+En adición, la población partícipe es toda la comunidad universitaria del Perú, agrupadas en las 35 universidades públicas y 65 universidades privadas del país. Además, la encuesta se encuentra regulada a través de tres resoluciones: la Resolución 1137-2009- ANR en la cual se aprueba el Marco de Cooperación Interinstitucional entre la Asamblea Nacional de Rectores y el INEI para el ejecución del II CENAUN 2010; la Resolución 1404-2009-ANR por la cual se dispone la participación en el II CENAUN 2010 de las universidades que conforman el Sistema Universitario, así como financiar y asumir el gasto de la realización del referido censo; y la Resolución 007-2010-INEI, por la cual se establece que el INEI realizará el planeamiento, programación, control y supervisión del II CENAUN 2010. 
+
+Por lo tanto, la investigación en base a los datos del II CENAUN 2010 tiene como pregunta de investigación: “¿Qué factores influyen en la relación de la aprobación otorgada por los estudiantes respecto a los servicios y áreas universitarias en la calidad formativa y desarrollo de las universidades?”. En este sentido, la hipótesis de la investigación viene a ser: la aprobación respecto a la aprobación en áreas universitarias contribuye más en la calidad formativa y desarrollo de las universidades, a comparación de la los servicios universitarios.  
+
+Metodología:
+La base de datos proviene de la página web del INEI, esta base tiene 9 capítulos, para este trabajo emplearemos todas las variables del capítulo 8, enfocadas a los estudiantes universitarios de pregrado.La encuesta fue realizada de forma voluntaria mediante internet por los mismos .De la base de datos empleamos todas las variables del capítulo 8, enfocadas a los estudiantes universitarios de pregrado. La cobertura geografica es el Perú, el método es el  autoempadronamiento de los  mediante internet por cédulas electrónicas.Nuestra unidad de muestreo son los estudiantes de pregrado del capitulo 8. Nuestro metodo de analisis es el analisis factorial por factor común.
+
+Bibligrafía: 
+
+Ley universitaria (2014, julio). Perú: Minedu. Disponible en: http://www.minedu.gob.pe/reforma-universitaria/pdf/ley_universitaria.pdf
+
+Resolución 1137 de 2009 [Ministerio de Educación]. Por la cual se aprueba el Marco de Cooperación Interinstitucional entre la Asamblea Nacional de Rectores y el Instituto Nacional de Estadística e Informática para la ejecución del II CENAUN 2010. 1 de enero de 2010.  
+
+Resolución 1404 de 2009 [Ministerio de Educación]. Por la cual se dispone la participación en el II CENAUN 2010 de las universidades que conforman el Sistema Nacional Universitario. 1 de enero de 2010. 
+ 
+Resolución Jefatural 007 de 2010 [Ministerio de Educación]. Por la cual se establece que el INEI realizará el planeamiento, programación, control y supervisión del II CENAUN 2010. 1 de enero de 2010.  
+
+SUNEDU. (9 de julio de 2020). 6 años de Reforma Universitaria.6 años de Reforma Universitaria (sunedu.gob.pe)
+
+Análisis de datos: 
+Convertimos a numericas las variables
+
+```{r}
+library(Rmisc)
+library(dplyr)
+data1=select(data,CALIDAD_UNIV,PERSPECTIVA,CALI_SERVICIOS_1,CALI_SERVICIOS_2,CALI_SERVICIOS_3,CALI_SERVICIOS_4,CALI_SERVICIOS_5,CALI_SERVICIOS_6,CALI_SERVICIOS_7,CALI_SERVICIOS_8,CALI_SERVICIOS_9,CALI_SERVICIOS_10,CALI_SERVICIOS_11,CALI_AREAS_1,CALI_AREAS_2,CALI_AREAS_3,CALI_AREAS_4,CALI_AREAS_5,CALI_AREAS_6,CALI_AREAS_7,CALI_AREAS_8,CALI_AREAS_9,CALI_AREAS_10,CURSO,INVES,ORG_ESTU,ACT_CULTURAL,PRAC_DEPO,USO_BIBLIOTRADI,USO_BIBLIOVIRTUAL,BECA_UNIV)
+str(data1)
+```
+
+Nuestras variables dependientes:
+```{r}
+#1. 
+str(data1$CALIDAD_UNIV)
+table(data1$CALIDAD_UNIV)
+data1$CALIDAD_UNIV=as.numeric(data1$CALIDAD_UNIV)
+sd(data1$CALIDAD_UNIV,na.rm=T)
+summary(data1$CALIDAD_UNIV)
+```
+
+```{r}
+#2
+str(data1$PERSPECTIVA)
+table(data1$PERSPECTIVA)
+data1$PERSPECTIVA=as.numeric(data1$PERSPECTIVA)
+sd(data1$PERSPECTIVA,na.rm=T)
+summary(data1$PERSPECTIVA)
+```
+
+2. Nuestras variables independientes
+```{r}
+#Planeamos crear un indicador a partir del análisis factorial o de cluster respecto a la percepcion de servicios (data$CALI_SERVICIOS_1 hasta data$CALI_SERVICIOS_11)
+
+str(data1$CALI_SERVICIOS_1)
+table(data1$CALI_SERVICIOS_1)
+data1$CALI_SERVICIOS_1=as.numeric(data1$CALI_SERVICIOS_1)
+sd(data1$CALI_SERVICIOS_1,na.rm=T)
+summary(data1$CALI_SERVICIOS_1)
+```
+
+```{r}
+str(data1$CALI_SERVICIOS_2)
+table(data1$CALI_SERVICIOS_2)
+data1$CALI_SERVICIOS_2=as.numeric(data1$CALI_SERVICIOS_2)
+sd(data1$CALI_SERVICIOS_2,na.rm=T)
+summary(data1$CALI_SERVICIOS_2)
+```
+
+```{r}
+str(data1$CALI_SERVICIOS_3)
+table(data1$CALI_SERVICIOS_3)
+data1$CALI_SERVICIOS_3=as.numeric(data1$CALI_SERVICIOS_3)
+sd(data1$CALI_SERVICIOS_3,na.rm=T)
+summary(data1$CALI_SERVICIOS_3)
+```
+
+```{r}
+str(data1$CALI_SERVICIOS_4)
+table(data1$CALI_SERVICIOS_4)
+data1$CALI_SERVICIOS_4=as.numeric(data1$CALI_SERVICIOS_4)
+sd(data1$CALI_SERVICIOS_4,na.rm=T)
+summary(data1$CALI_SERVICIOS_4)
+```
+
+```{r}
+str(data1$CALI_SERVICIOS_5)
+table(data1$CALI_SERVICIOS_5)
+data1$CALI_SERVICIOS_5=as.numeric(data1$CALI_SERVICIOS_5)
+sd(data1$CALI_SERVICIOS_5,na.rm=T)
+summary(data1$CALI_SERVICIOS_5)
+```
+
+```{r}
+str(data1$CALI_SERVICIOS_6)
+table(data1$CALI_SERVICIOS_6)
+data1$CALI_SERVICIOS_6=as.numeric(data1$CALI_SERVICIOS_6)
+sd(data1$CALI_SERVICIOS_6,na.rm=T)
+summary(data1$CALI_SERVICIOS_6)
+```
+
+```{r}
+str(data1$CALI_SERVICIOS_7)
+table(data1$CALI_SERVICIOS_7)
+data1$CALI_SERVICIOS_7=as.numeric(data1$CALI_SERVICIOS_7)
+sd(data1$CALI_SERVICIOS_7,na.rm=T)
+summary(data1$CALI_SERVICIOS_7)
+```
+
+```{r}
+str(data1$CALI_SERVICIOS_8)
+table(data1$CALI_SERVICIOS_8)
+data1$CALI_SERVICIOS_8=as.numeric(data1$CALI_SERVICIOS_8)
+sd(data1$CALI_SERVICIOS_8,na.rm=T)
+summary(data1$CALI_SERVICIOS_8)
+```
+
+```{r}
+str(data1$CALI_SERVICIOS_9)
+table(data1$CALI_SERVICIOS_9)
+data1$CALI_SERVICIOS_9=as.numeric(data1$CALI_SERVICIOS_9)
+sd(data1$CALI_SERVICIOS_9,na.rm=T)
+summary(data1$CALI_SERVICIOS_9)
+```
+
+
+```{r}
+str(data1$CALI_SERVICIOS_10)
+table(data1$CALI_SERVICIOS_10)
+data1$CALI_SERVICIOS_10=as.numeric(data1$CALI_SERVICIOS_10)
+sd(data1$CALI_SERVICIOS_10,na.rm=T)
+summary(data1$CALI_SERVICIOS_10)
+```
+
+
+```{r}
+str(data1$CALI_SERVICIOS_11)
+table(data1$CALI_SERVICIOS_11)
+data1$CALI_SERVICIOS_11=as.numeric(data1$CALI_SERVICIOS_11)
+sd(data1$CALI_SERVICIOS_11,na.rm=T)
+summary(data1$CALI_SERVICIOS_11)
+```
+
+```{r}
+#Planeamos crear un indicador a partir del análisis factorial o de cluster respecto a la percepcion de areas universitarias (data$CALI_AREAS_1 hasta data$CALI_AREAS_2)
+
+str(data1$CALI_AREAS_1)
+table(data1$CALI_AREAS_1)
+data1$CALI_AREAS_1=as.numeric(data1$CALI_AREAS_1)
+sd(data1$CALI_AREA_1,na.rm=T)
+summary(data1$CALI_AREAS_1)
+```
+
+```{r}
+str(data1$CALI_AREAS_2)
+table(data1$CALI_AREAS_2)
+data1$CALI_AREAS_2=as.numeric(data1$CALI_AREAS_2)
+sd(data1$CALI_AREA_2,na.rm=T)
+summary(data1$CALI_AREAS_2)
+```
+
+```{r}
+str(data1$CALI_AREAS_3)
+table(data1$CALI_AREAS_3)
+data1$CALI_AREAS_3=as.numeric(data1$CALI_AREAS_3)
+sd(data1$CALI_AREA_3,na.rm=T)
+summary(data1$CALI_AREAS_3)
+```
+
+```{r}
+str(data1$CALI_AREAS_4)
+table(data1$CALI_AREAS_4)
+data1$CALI_AREAS_4=as.numeric(data1$CALI_AREAS_4)
+sd(data1$CALI_AREA_4,na.rm=T)
+summary(data1$CALI_AREAS_4)
+```
+
+```{r}
+str(data1$CALI_AREAS_5)
+table(data1$CALI_AREAS_5)
+data1$CALI_AREAS_5=as.numeric(data1$CALI_AREAS_5)
+sd(data1$CALI_AREA_5,na.rm=T)
+summary(data1$CALI_AREAS_5)
+```
+
+```{r}
+str(data1$CALI_AREAS_6)
+table(data1$CALI_AREAS_6)
+data1$CALI_AREAS_6=as.numeric(data1$CALI_AREAS_6)
+sd(data1$CALI_AREA_6,na.rm=T)
+summary(data1$CALI_AREAS_6)
+```
+
+```{r}
+str(data1$CALI_AREAS_7)
+table(data1$CALI_AREAS_7)
+data1$CALI_AREAS_7=as.numeric(data1$CALI_AREAS_7)
+sd(data1$CALI_AREA_7,na.rm=T)
+summary(data1$CALI_AREAS_7)
+```
+
+```{r}
+str(data1$CALI_AREAS_8)
+table(data1$CALI_AREAS_8)
+data1$CALI_AREAS_8=as.numeric(data1$CALI_AREAS_8)
+sd(data1$CALI_AREA_8,na.rm=T)
+summary(data1$CALI_AREAS_8)
+```
+
+```{r}
+str(data1$CALI_AREAS_9)
+table(data1$CALI_AREAS_9)
+data1$CALI_AREAS_9=as.numeric(data1$CALI_AREAS_9)
+sd(data1$CALI_AREA_9,na.rm=T)
+summary(data1$CALI_AREAS_9)
+```
+
+```{r}
+str(data1$CALI_AREAS_10)
+table(data1$CALI_AREAS_10)
+data1$CALI_AREAS_10=as.numeric(data1$CALI_AREAS_10)
+sd(data1$CALI_AREA_10,na.rm=T)
+summary(data1$CALI_AREAS_10)
+```
+
+```{r}
+str(data1$CURSO)
+table(data1$CURSO)
+data1$CURSO=as.numeric(data1$CURSO)
+sd(data1$CURSO,na.rm=T)
+summary(data1$CURSO)
+```
+
+```{r}
+str(data1$INVES)
+table(data1$INVES)
+data1$INVES=as.numeric(data1$INVES)
+sd(data1$INVESCURSO,na.rm=T)
+summary(data1$INVES)
+```
+
+
+```{r}
+str(data1$ORG_ESTU)
+table(data1$ORG_ESTU)
+data1$ORG_ESTU=as.numeric(data1$ORG_ESTU)
+sd(data1$ORG_ESTU,na.rm=T)
+summary(data1$ORG_ESTU)
+```
+
+
+```{r}
+str(data1$ACT_CULTURAL)
+table(data1$ACT_CULTURAL)
+data1$ACT_CULTURAL=as.numeric(data1$ACT_CULTURAL)
+sd(data1$ACT_CULTURAL,na.rm=T)
+summary(data1$ACT_CULTURAL)
+```
+
+
+```{r}
+str(data1$PRAC_DEPO)
+table(data1$PRAC_DEPO)
+data1$PRAC_DEPO=as.numeric(data1$PRAC_DEPO)
+sd(data1$PRAC_DEPO,na.rm=T)
+summary(data1$PRAC_DEPO)
+```
+
+
+```{r}
+str(data1$USO_BIBLIOTRADI)
+table(data1$USO_BIBLIOTRADI)
+data1$USO_BIBLIOTRADI=as.numeric(data1$USO_BIBLIOTRADI)
+sd(data1$USO_BIBLIOTRADI,na.rm=T)
+summary(data1$USO_BIBLIOTRADI)
+```
+
+
+```{r}
+str(data1$USO_BIBLIOVIRTUAL)
+table(data1$USO_BIBLIOVIRTUAL)
+data1$USO_BIBLIOVIRTUAL=as.numeric(data1$USO_BIBLIOVIRTUAL)
+sd(data1$USO_BIBLIOVIRTUAL,na.rm=T)
+summary(data1$USO_BIBLIOVIRTUAL)
+```
+
+
+```{r}
+str(data1$BECA_UNIV)
+table(data1$BECA_UNIV)
+data1$BECA_UNIV=as.numeric(data1$BECA_UNIV)
+sd(data1$BECA_UNIV,na.rm=T)
+summary(data1$BECA_UNIV)
+```
+
+Las variables relacionadas a servicios pasarían a constituir una sola variable de análisis factorial, lo mismo para las variables sobre áreas. Las demás variables serían variables que se evaluarían para saber si aportan a explicar las 2 variables dependientes. 
+
+```{r}
+str(data1)
+subdata<- data1[,c(3:13)]
+subdata2<- data1[,c(14:23)]
+str(subdata)
+str(subdata2)
+```
+
+```{r}
+library(polycor)
+corMatrix=polycor::hetcor(subdata)$correlations
+corMatrix
+library(ggcorrplot)
+ggcorrplot(corMatrix,colors = c("#ff0000", "white", "#0000ff"))
+```
+Prueba KMO
+```{r}
+library(psych)
+KMO(corMatrix) 
+```
+
+```{r}
+cortest.bartlett(corMatrix,n=nrow(subdata))$p.value>0.05
+```
+```{r}
+#Factor Común
+fa.parallel(subdata, fm="pa", fa="fa", main = "Gráfico de sedimentación Factor Comun")
+```
+
+```{r}
+#Factor Común
+eigen<-eigen(cor(subdata, use="complete"))
+eigen$values
+```
+
+```{r}
+#Factor Común
+library(GPArotation)
+factorial <- fa(subdata,nfactors = 2,rotate = "varimax",fm="minres")
+```
+
+```{r}
+print(factorial$loadings)
+```
+
+
+```{r}
+print(factorial$loadings,cutoff = 0.5)
+fa.diagram(factorial)
+```
+
+```{r}
+library("devtools")
+library("factoextra")
+```
+
+- ¿Qué variables aportaron mas a los factores?
+```{r}
+sort(factorial$communality)
+```
+
+- ¿Qué variables contribuyen a mas de un factor?
+```{r}
+sort(factorial$complexity)
+```
+
+- ¿Qué variables tiene un componente "único" más grande?
+```{r}
+sort(factorial$uniquenesses)
+```
+
+```{r}
+factorial_casos<-as.data.frame(factorial$scores)
+head(factorial_casos)
+summary(factorial_casos)
+```
+
+```{r}
+subdata$factor1<- factorial_casos$MR1
+subdata$factor2<- factorial_casos$MR2
+```
+
+```{r}
+library(BBmisc)
+subdata$comp1_normalizado = normalize(subdata$factor1, 
+                                        method = "range", 
+                                        margin=2, # by column
+                                        range = c(0, 100))
+subdata$comp2_normalizado = normalize(subdata$factor2, 
+                                        method = "range", 
+                                        margin=2, # by column
+                                        range = c(0, 100))
+
+summary(subdata$comp2_normalizado)
+hist(subdata$comp2_normalizado)
+```
+
+#2.
+```{r}
+library(polycor)
+corMatrix2=polycor::hetcor(subdata2)$correlations
+corMatrix2
+library(ggcorrplot)
+ggcorrplot(corMatrix2,colors = c("#ff0000", "white", "#0000ff"))
+```
+
+Prueba KMO
+```{r}
+library(psych)
+KMO(corMatrix2) 
+```
+
+```{r}
+cortest.bartlett(corMatrix,n=nrow(subdata2))$p.value>0.05
+```
+
+```{r}
+#Factor Común
+fa.parallel(subdata2, fm="pa", fa="fa", main = "Gráfico de sedimentación Factor Comun")
+```
+
+```{r}
+#Factor Común
+eigen<-eigen(cor(subdata2, use="complete"))
+eigen$values
+```
+
+```{r}
+#Factor Común
+library(GPArotation)
+factorial2 <- fa(subdata2,nfactors = 2,rotate = "varimax",fm="minres")
+```
+
+```{r}
+print(factorial2$loadings)
+```
+
+```{r}
+print(factorial2$loadings,cutoff = 0.5)
+fa.diagram(factorial2)
+```
+
+- ¿Qué variables aportaron mas a los factores?
+```{r}
+sort(factorial2$communality)
+```
+
+- ¿Qué variables contribuyen a mas de un factor?
+```{r}
+sort(factorial2$complexity)
+```
+
+- ¿Qué variables tiene un componente "único" más grande?
+```{r}
+sort(factorial2$uniquenesses)
+```
+
+```{r}
+factorial2_casos<-as.data.frame(factorial2$scores)
+head(factorial2_casos)
+summary(factorial2_casos)
+```
+
+
+
+```{r}
+subdata2$factor1<- factorial2_casos$MR1
+subdata2$factor2<- factorial2_casos$MR2
+```
+
+```{r}
+library(BBmisc)
+subdata2$comp1_normalizado = normalize(subdata2$factor1, 
+                                        method = "range", 
+                                        margin=2, # by column
+                                        range = c(0, 100))
+subdata2$comp2_normalizado = normalize(subdata2$factor2, 
+                                        method = "range", 
+                                        margin=2, # by column
+                                        range = c(0, 100))
+summary(subdata2$comp2_normalizado)
+hist(subdata2$comp2_normalizado)
+```
+
+
+Modelo
+
+Modelo con factores de servicios
+```{r}
+mod1<-lm(data1$PERSPECTIVA~ subdata$comp1_normalizado+ subdata$comp2_normalizado+data1$CURSO+data1$INVES+data1$ORG_ESTU+data1$ACT_CULTURAL+data1$PRAC_DEPO+data1$USO_BIBLIOTRADI+data1$USO_BIBLIOVIRTUAL+data1$BECA_UNIV)
+summary(mod1)
+```
+El modelo tiene un pvalor menor a 0,05 por tanto es válido. El R cuadrado ajustado es de 0.21 lo cual significa que el modelo explica el 21% de la variable dependiente. Vemos que el pvalor de cada variables es menor a 0.05 por tanto todas las variables aportan a la explicación del modelo. Podemos verificar que el modelo explica en forma reducida a la variable dependiente, lo cual podría ser resultado de las distancias (varianzas) entre las variables adicionales y el modelo de factor común: Curso,organizacion estudiantil, investigacion,actividades culturales,practica deportiva,uso biblioteca , biblioteca virtual, beca universidad.
+
+```{r}
+mod1.2<-lm(data1$CALIDAD_UNIV~ subdata$comp1_normalizado+ subdata$comp2_normalizado+data1$CURSO+data1$INVES+data1$ORG_ESTU+data1$ACT_CULTURAL+data1$PRAC_DEPO+data1$USO_BIBLIOTRADI+data1$USO_BIBLIOVIRTUAL+data1$BECA_UNIV)
+summary(mod1.2)
+```
+Comparando encontramos que de igual forma respecto a calidad univ, la predictibilidad solo aumenta en un 1.88.
+
+Modelo con factores de calidad de areas
+```{r}
+mod2<-lm(data1$CALIDAD_UNIV~ subdata2$comp1_normalizado+ subdata2$comp2_normalizado+data1$CURSO+data1$INVES+data1$ORG_ESTU+data1$ACT_CULTURAL+data1$PRAC_DEPO+data1$USO_BIBLIOTRADI+data1$USO_BIBLIOVIRTUAL+data1$BECA_UNIV)
+summary(mod2)
+```
+
+El modelo tiene un pvalor menor a 0,05 por tanto es válido. El R cuadrado ajustado es de 0.30 lo cual significa que el modelo explica el 30% de la variable dependiente . Vemos que el pvalor de cada variables es menor a 0.05 por tanto todas las variables aportan a la explicación del modelo. Podemos verificar que el modelo explica en forma reducida a la variable dependiente, lo cual podría ser resultado de las distancias (varianzas) entre las variables adicionales y el modelo de factor común: Curso,organizacion estudiantil, investigacion,actividades culturales,practica deportiva,uso biblioteca , biblioteca virtual, beca universidad.
+
+
+Conclusión:
+Observamos que el modelo 2 predice mejor el puntaje que se puede obtener de los alumnos, por lo que es mas completo. Encontramos que comparativamente se puede hacer un mejor seguimiento de lo que se puede esperar en calidad segun el puntaje que se otorga por los factores de las areas, en comparacion de lo que se podria lograr entender respecto a perspectiva por los factores de servicios. A causa de lo mencionado concluimos que la aprobación respecto a la aprobación en áreas universitarias contribuye más en la calidad formativa y desarrollo de las universidades, a comparación de la los servicios universitarios. 
